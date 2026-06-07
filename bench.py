@@ -72,6 +72,8 @@ def main() -> None:
     print()
     print("Note: training checkpoints store latent weights in PyTorch tensors.")
     print("The 1.58-bit number is the ideal packed ternary forward representation.")
+    print("This educational PyTorch path is not expected to beat FP32 CPU BLAS.")
+    print("Real BitNet speedups require packed formats and optimized bitnet.cpp kernels.")
 
 
 if __name__ == "__main__":

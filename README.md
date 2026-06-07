@@ -10,6 +10,26 @@ This is the educational repo. It is written so a researcher, student, or local-L
 engineer can understand 1.58-bit training in one afternoon. If you want optimized
 CPU/GPU inference kernels, use Microsoft's official BitNet project.
 
+## Read This Before Benchmarking
+
+`nanoBitNet` is expected to be slower than an ordinary FP32 PyTorch model on CPU.
+That is not a BitNet failure; it is the cost of showing the mechanics in plain
+PyTorch.
+
+Every `BitLinear` forward pass in this repo does:
+
+```text
+LayerNorm
++ activation absmax quantization
++ weight absmean quantization
++ ordinary floating-point torch linear
+```
+
+The weights are ternary in the forward math, but they are not packed into
+1.58-bit buffers and they do not run through custom ternary matrix-multiply
+kernels. Real BitNet inference speed requires the optimized kernels and model
+formats used by `bitnet.cpp`.
+
 ## Quick Start
 
 ```bash
@@ -100,16 +120,53 @@ python bench.py --device cpu --steps 50
 ```
 
 Expected shape of the output:
+| model | params | ideal bits/weight | ideal weight storage | forward ms |
+|---|---:|---:|---:|---:|
+| fp32 tiny GPT | 819,712 | 32.00 | 3.28 MB | 12.86 |
+| fp16 tiny GPT | 819,712 | 16.00 | 1.64 MB | 513.65 |
+| BitNet-style ternary GPT | 819,712 | 1.58 | 0.16 MB | 70.14 |
 
-| model | trainable params | ideal weight storage | forward ms |
-|---|---:|---:|---:|
-| fp32 tiny GPT | same | 32.00 bits/weight | measured locally |
-| fp16 tiny GPT | same | 16.00 bits/weight | measured where supported |
-| BitNet-style ternary GPT | same | 1.58 bits/weight | measured locally |
+Note: training checkpoints store latent weights in PyTorch tensors.
+The 1.58-bit number is the ideal packed ternary forward representation.
+
 
 Important: PyTorch still stores the latent weights as FP32 tensors during training.
 The 1.58-bit number describes the quantized forward/inference representation, not
 the raw size of this educational training checkpoint.
+
+On CPU, the BitNet-style row may be slower than FP32 because it pays quantization
+overhead and then still calls PyTorch's normal floating-point linear primitive.
+The benchmark is included to make that tradeoff visible, not to claim production
+inference speed.
+
+## Real Inference With bitnet.cpp
+
+Yes, this project can point users to `bitnet.cpp` for real BitNet inference, but
+that is a separate execution path:
+
+- Train or download a supported BitNet b1.58 model.
+- Convert or obtain it in the GGUF format expected by `bitnet.cpp`.
+- Run it through Microsoft's optimized CPU/GPU kernels.
+
+Microsoft's BitNet README describes `bitnet.cpp` as the official inference
+framework for 1-bit LLMs and documents optimized CPU/GPU kernels, supported
+models, `.safetensors` conversion, and benchmark scripts.
+
+What `nanoBitNet` does today:
+
+- teaches the BitNet b1.58 layer mechanics in PyTorch
+- trains a tiny character model for inspection
+- shows why the 1.58-bit representation exists
+
+What `nanoBitNet` does not do today:
+
+- export this tiny character model to a supported `bitnet.cpp` GGUF architecture
+- implement packed ternary kernels
+- claim `bitnet.cpp` speed from PyTorch `F.linear`
+
+A good future extension is `export_bitnet_cpp.py`, but it should target a
+`bitnet.cpp`-supported architecture and tokenizer rather than this tiny
+character-level teaching model.
 
 ## Paper Validation
 

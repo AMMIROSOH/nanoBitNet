@@ -50,6 +50,20 @@ paper-faithful ideas from educational simplifications.
 - No production tokenizer. Training is character-level to keep the repo readable.
 - No claim that this is an official BitNet reproduction or optimized inference stack.
 
+## Inference Boundary
+
+The PyTorch implementation is slower than FP32 on many CPUs because it performs
+quantization work and then still uses a normal floating-point linear primitive.
+The papers' practical inference benefit depends on low-bit storage and optimized
+ternary kernels. Microsoft's `bitnet.cpp` is the official inference framework
+for that path and supports optimized CPU/GPU inference for supported BitNet
+models.
+
+This repo should therefore advertise two separate ideas:
+
+- `nanoBitNet`: readable training-time mechanics and paper education.
+- `bitnet.cpp`: real optimized inference for supported 1-bit LLMs.
+
 ## Primary Sources
 
 - JMLR BitNet paper: https://jmlr.org/papers/v26/24-2050.html
