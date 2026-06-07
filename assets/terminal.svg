@@ -1,0 +1,15 @@
+<svg width="960" height="420" viewBox="0 0 960 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="nanoBitNet terminal demo">
+  <rect width="960" height="420" rx="18" fill="#101217"/>
+  <rect x="22" y="22" width="916" height="376" rx="12" fill="#171A21" stroke="#2D3340"/>
+  <circle cx="52" cy="50" r="7" fill="#FF5F57"/>
+  <circle cx="76" cy="50" r="7" fill="#FFBD2E"/>
+  <circle cx="100" cy="50" r="7" fill="#28C840"/>
+  <text x="42" y="96" fill="#A8F0C6" font-family="Consolas, monospace" font-size="20">$ python train.py --dataset tinyshakespeare</text>
+  <text x="42" y="132" fill="#D7DCE7" font-family="Consolas, monospace" font-size="18">iter 0000 | train loss 4.33 | val loss 4.32</text>
+  <text x="42" y="162" fill="#D7DCE7" font-family="Consolas, monospace" font-size="18">iter 0100 | train loss 2.72 | val loss 2.77</text>
+  <text x="42" y="192" fill="#D7DCE7" font-family="Consolas, monospace" font-size="18">saved checkpoint to out/nanobitnet.pt</text>
+  <text x="42" y="246" fill="#A8F0C6" font-family="Consolas, monospace" font-size="20">$ python sample.py --prompt "The future of AI is"</text>
+  <text x="42" y="282" fill="#F0DFA8" font-family="Consolas, monospace" font-size="18">The future of AI is a small model you can understand...</text>
+  <text x="42" y="338" fill="#8AB4F8" font-family="Consolas, monospace" font-size="20">BitLinear: FP32 latent W -> absmean -> {-1, 0, +1}</text>
+  <text x="42" y="368" fill="#8AB4F8" font-family="Consolas, monospace" font-size="20">activations: LayerNorm -> absmax int8-like quantization</text>
+</svg>

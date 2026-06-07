@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If nanoBitNet helps your work, please cite the BitNet papers and this repository."
+title: "nanoBitNet: BitNet b1.58 in pure PyTorch"
+version: 0.1.0
+date-released: 2026-06-07
+license: MIT
+authors:
+  - family-names: "nanoBitNet contributors"
+references:
+  - type: article
+    title: "BitNet: 1-bit Pre-training for Large Language Models"
+    authors:
+      - family-names: "Wang"
+        given-names: "Hongyu"
+      - family-names: "Ma"
+        given-names: "Shuming"
+    journal: "Journal of Machine Learning Research"
+    year: 2025
+    url: "https://jmlr.org/papers/v26/24-2050.html"
+  - type: generic
+    title: "The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits"
+    authors:
+      - family-names: "Ma"
+        given-names: "Shuming"
+      - family-names: "Wang"
+        given-names: "Hongyu"
+    year: 2024
+    url: "https://arxiv.org/abs/2402.17764"
